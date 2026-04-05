@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Job Details</title>
+    <style>
+        body { font-family: monospace; background: #1a1a1a; color: #00ff00; padding: 40px; }
+        .detail-box { border: 2px solid #00ff00; padding: 20px; max-width: 600px; }
+        .back-btn { color: #00ff00; text-decoration: none; display: block; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-btn"><< RETURN_TO_LIST</a>
+    
+    <div id="job-details" class="detail-box">
+        Loading job specifics...
+    </div>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const jobId = params.get('id');
+
+        const SB_URL = 'https://shljdrtdukhhtviyilre.supabase.co/rest/v1/jobs';
+        const SB_KEY = 'sb_publishable_vH_HCJj30PvAMTD2RsLoJQ_6fmIygE_';
+
+        fetch(SB_URL, {
+            headers: {
+                'apikey': SB_KEY,
+                'Authorization': `Bearer ${SB_KEY}`
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            const job = data[0]; 
+            document.getElementById('job-details').innerHTML = `
+                <h2>${job.position}</h2>
+                <hr style="border-color:#00ff00">
+                <p><strong>Description:</strong><br>${job.description}</p>
+                <p><strong>Salary:</strong> ₱${job.salary}</p>
+                <p><strong>Deadline:</strong> ${job.ends_at}</p>
+                <button onclick="alert('Proceeding to Application...')">APPLY_NOW</button>
+            `;
+        });
+    </script>
+</body>
+</html>
